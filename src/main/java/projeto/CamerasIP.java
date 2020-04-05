@@ -5,9 +5,8 @@ public class CamerasIP {
     private String modelo;
     private String serialNumber;
     private String MAC;
-    private int resolucao;
-    private int IR;
-    private String firmWare;
+    private String local = "armario";
+
 
     public CamerasIP(String modelo, String serialNumber, String MAC) {
         this.MAC = MAC;
@@ -39,39 +38,20 @@ public class CamerasIP {
         this.MAC = MAC;
     }
 
-    public int getResolucao() {
-        return resolucao;
+    public String getLocal() {
+        return local;
     }
 
-    public void setResolucao(int resolucao) {
-        this.resolucao = resolucao;
-    }
-
-    public int getIR() {
-        return IR;
-    }
-
-    public void setIR(int IR) {
-        this.IR = IR;
-    }
-
-    public String getFirmWare() {
-        return firmWare;
-    }
-
-    public void setFirmWare(String firmWare) {
-        this.firmWare = firmWare;
+    public void setLocal(String local) {
+        this.local = local;
     }
 
     @Override
     public String toString() {
-        return "CamerasIP{" +
-                "modelo='" + modelo + '\'' +
-                ", serialNumber='" + serialNumber + '\'' +
-                ", MAC='" + MAC + '\'' +
-                ", resolucao=" + resolucao +
-                ", IR=" + IR +
-                ", firmWare='" + firmWare + '\'' +
-                '}';
+        return "CamerasIP " +
+                ", Modelo= [" + modelo +
+                "] Numero De Série= ["  + serialNumber +
+                "] MAC= [" + MAC +
+                "] Local = [" + local + "]";
     }
 }
