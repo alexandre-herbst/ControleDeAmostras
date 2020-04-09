@@ -1,0 +1,4 @@
+CamerasIP , Modelo= [VIP 5550 DZ IA] Numero De Série= [ABC123] MAC= [5550DZIA] Local = [armario]
+CamerasIP , Modelo= [VIP 5850 B] Numero De Série= [ABC321] MAC= [5850B] Local = [armario]
+CamerasIP , Modelo= [VIP 3240 D IA] Numero De Série= [ABC111] MAC= [3240DIA] Local = [armario]
+CamerasIP , Modelo= [VIP 3240 D IA] Numero De Série= [ABC112] MAC= [3240DIAa] Local = [armario]

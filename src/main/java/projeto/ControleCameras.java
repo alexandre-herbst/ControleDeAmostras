@@ -20,7 +20,7 @@ public class ControleCameras {
      * @return false = não foi possível inserir a amostra no controle
      *  true = camera inserida no controle de amostras
      */
-    public boolean addCamera(CamerasIP cameraIP){
+    public boolean addCamera(CamerasIP cameraIP)    {
 
         if (controle.containsKey(cameraIP.getModelo())){
             ArrayList<CamerasIP> listaCamera = controle.get(cameraIP.getModelo());
@@ -80,7 +80,7 @@ public class ControleCameras {
 
     }
 
-    private String imprimeListaDoModelo(String modelo){
+    public String imprimeListaDoModelo(String modelo){
         listaAmostras = retornaLista(modelo);
         StringBuilder sb = new StringBuilder();
 

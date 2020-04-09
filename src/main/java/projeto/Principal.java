@@ -7,20 +7,29 @@ public class Principal {
     public static void main(String[] args) throws IOException {
 
         ControleCameras controleCameras = new ControleCameras();
-        CamerasIP camera1 = new CamerasIP("VIP 5550 DZ IA", "ABC123", "5550DZIA" );
-        CamerasIP camera2 = new CamerasIP("VIP 5850 B", "ABC321", "5850B" );
-        CamerasIP camera3 = new CamerasIP("VIP 3240 D IA", "ABC111", "3240DIA" );
-        CamerasIP camera5 = new CamerasIP("VIP 3240 D IA", "ABC112", "3240DIAa" );
-        String caminho = "teste.txt";
+        String caminho = "TodasAsAmostras.txt";
+        Arquivo arq = new Arquivo(caminho);
+        arq.puxarArquivo(controleCameras);
 
-        controleCameras.addCamera(camera1);
-        controleCameras.addCamera(camera2);
-        controleCameras.addCamera(camera3);
-        controleCameras.addCamera(camera5);
+        Pessoa pessoa1 = new Pessoa("Alexandre", "al053681", "alexandre.carvalho@intelbras.com.br");
+        Pessoa pessoa2 = new Pessoa("Leonardo", "le052354", "leo@intelbras.com.br");
+        Pessoa pessoa3 = new Pessoa("Marcos", "ma053254", "marcos.soares@intelbras.com.br");
 
-        controleCameras.removerCamerasIP(camera2);
+        ListaDePessoas listaDePessoas = new ListaDePessoas();
+        listaDePessoas.inserirPessoa(pessoa1);
+        listaDePessoas.inserirPessoa(pessoa2);
+        listaDePessoas.inserirPessoa(pessoa3);
 
-        System.out.println(controleCameras.toString());
+        Pessoa pessoa4 = listaDePessoas.buscarPessoa("Alexandre");
+        System.out.println(pessoa4.toString());
+        pessoa4 = listaDePessoas.buscarPessoa("al053681");
+        System.out.println(pessoa4.toString());
+        System.out.println(" ");
+
+        System.out.println(listaDePessoas.toString());
+        listaDePessoas.removerPessoa(pessoa1);
+        System.out.println(" ");
+        System.out.println(listaDePessoas.toString());
 
     }
 }

@@ -11,26 +11,18 @@ public class Arquivo {
         this.arquivo = new File(nomeArquivo);
     }
 
-    public void puxarArquivo(ControleCameras listaDeCameras){
-
+    public void puxarArquivo(ControleCameras listaDeCameras)
+    {
         try {
             Scanner leitor = new Scanner(arquivo);
             while (leitor.hasNext()) {
                 String linha = leitor.nextLine();
-
-
-
-
-
-                System.out.println(linha);
+                listaDeCameras.addCamera(montaCamera(linha));
             }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     public  void imprimeConteudoArquivo() {
@@ -46,8 +38,7 @@ public class Arquivo {
         }
     }
 
-
-    public  void escrever(CamerasIP camerasIP) {//throws IOException {
+    public  void salvarCamera(CamerasIP camerasIP) {//throws IOException {
 
         FileWriter fwArquivo = null;
         BufferedWriter bw;
@@ -73,23 +64,23 @@ public class Arquivo {
         }
     }
 
-    public void salvarCamera(CamerasIP camerasIP) throws IOException {
-
-        try {
-
-            FileOutputStream fout = new FileOutputStream(arquivo);
-            ObjectOutputStream oos = new ObjectOutputStream(fout);
-
-            oos.writeObject(camerasIP);
-
-            oos.flush(); //Descarregar o flush
-            oos.close();
-            fout.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+//    //public void salvarCamera(CamerasIP camerasIP) throws IOException {
+//
+//        try {
+//
+//            FileOutputStream fout = new FileOutputStream(arquivo);
+//            ObjectOutputStream oos = new ObjectOutputStream(fout);
+//
+//            oos.writeObject(camerasIP);
+//
+//            oos.flush(); //Descarregar o flush
+//            oos.close();
+//            fout.close();
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public CamerasIP lerCamerasIP() throws IOException, ClassNotFoundException {
         try {
@@ -107,6 +98,22 @@ public class Arquivo {
         }
     }
 
+    public CamerasIP montaCamera(String linha){
 
+        String modelo = linha.substring(linha.indexOf('[') + 1,linha.indexOf(']'));
+        linha = linha.substring(linha.indexOf(']')+ 1,linha.lastIndexOf(']')+1);
+
+        String numeroDeSerie = linha.substring(linha.indexOf('[')+1,linha.indexOf(']'));
+        linha = linha.substring(linha.indexOf(']')+ 1,linha.lastIndexOf(']')+1);
+
+        String MAC = linha.substring(linha.indexOf('[')+1,linha.indexOf(']'));
+        linha = linha.substring(linha.indexOf(']')+1,linha.lastIndexOf(']')+1);
+
+        String local = linha.substring(linha.indexOf('[')+1,linha.indexOf(']'));
+
+        CamerasIP camerasIP = new CamerasIP(modelo,numeroDeSerie,MAC);
+        camerasIP.setLocal(local);
+        return camerasIP;
+    }
 
 }
