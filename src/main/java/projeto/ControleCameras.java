@@ -1,14 +1,15 @@
 package projeto;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ControleCameras {
 
     private HashMap<String, ArrayList<CamerasIP>> controle = new HashMap<>();
-    private ArrayList<CamerasIP> listaAmostras;
-
+    private ArrayList<CamerasIP> listaAmostras = new ArrayList<>();
+    private ArrayList<String> listaModelos = new ArrayList<>();
 
 
 
@@ -56,23 +57,58 @@ public class ControleCameras {
         }
     }
 
-    public  void removerCamerasIP(CamerasIP camerasIP){
-        listaAmostras = retornaLista(camerasIP.getModelo());
-        listaAmostras.removeIf(camera -> camera.getSerialNumber().equals(camerasIP.getSerialNumber()));
+    public  boolean removerCamerasIP(String numeroDeSerie){ //Necessario remover camera pelo NS
+
+         listaModelos = retornaTodosOsModelos();
+        for (String modelo : listaModelos) {
+            listaAmostras = retornaListaDoModelo(modelo);
+            for (CamerasIP cameraip : listaAmostras) {
+                if(cameraip.getSerialNumber().equals(numeroDeSerie)){
+                    listaAmostras.remove(cameraip);
+                    return true;
+                }
+            }
+        }
+        return false;
+
     }
 
-    public CamerasIP buscarCamera(String modelo, String numeroDeSerie){
+    public CamerasIP buscarCamera(String numeroDeSerie){
 
-        listaAmostras = retornaLista(modelo);
-        for (CamerasIP camera : listaAmostras) {
-            if(camera.getSerialNumber().equals(numeroDeSerie)){
-                return camera;
+        listaModelos = retornaTodosOsModelos();
+        for (String modelo : listaModelos) {
+            listaAmostras = retornaListaDoModelo(modelo);
+            for (CamerasIP cameraip : listaAmostras) {
+                if(cameraip.getSerialNumber().equals(numeroDeSerie)){
+                    return cameraip;
+                }
             }
         }
         throw new IllegalArgumentException("Numero de série não encontrado");
     }
 
-    private ArrayList<CamerasIP> retornaLista(String modelo){
+    public boolean verificaCamera(String numeroDeSerie){
+
+        listaModelos = retornaTodosOsModelos();
+        for (String modelo : listaModelos) {
+            listaAmostras = retornaListaDoModelo(modelo);
+            for (CamerasIP cameraip : listaAmostras) {
+                if(cameraip.getSerialNumber().equals(numeroDeSerie)){
+                    return true;
+                }
+            }
+        }
+       return false;
+    }
+
+
+
+    public  ArrayList<String> retornaTodosOsModelos(){
+        listaModelos.addAll(controle.keySet());
+        return listaModelos;
+    }
+
+    public  ArrayList<CamerasIP> retornaListaDoModelo(String modelo){
         if(controle.containsKey(modelo)){
             return controle.get(modelo);
         }
@@ -81,7 +117,7 @@ public class ControleCameras {
     }
 
     public String imprimeListaDoModelo(String modelo){
-        listaAmostras = retornaLista(modelo);
+        listaAmostras = retornaListaDoModelo(modelo);
         StringBuilder sb = new StringBuilder();
 
         for (CamerasIP camerasIP : listaAmostras) {

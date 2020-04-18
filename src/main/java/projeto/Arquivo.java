@@ -1,104 +1,133 @@
 package projeto;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Arquivo {
 
-    private File arquivo;
+    private File arquivoDeCameras;
+    private File arquivoDePessoas;
 
-    public Arquivo(String nomeArquivo) {
-        this.arquivo = new File(nomeArquivo);
+
+    public Arquivo(String arquivoCameras, String arquivoPessoas) {
+        this.arquivoDeCameras = new File(arquivoCameras);
+        this.arquivoDePessoas = new File(arquivoPessoas);
     }
 
-    public void puxarArquivo(ControleCameras listaDeCameras)
-    {
-        try {
-            Scanner leitor = new Scanner(arquivo);
+    public ControleCameras puxarArquivoCameras(ControleCameras listaDeCameras) throws FileNotFoundException {
+
+            listaDeCameras = new ControleCameras();
+
+            Scanner leitor = new Scanner(arquivoDeCameras);
             while (leitor.hasNext()) {
                 String linha = leitor.nextLine();
                 listaDeCameras.addCamera(montaCamera(linha));
             }
+            return  listaDeCameras;
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
+
+    public ListaDePessoas puxarArquivoPessoas(ListaDePessoas listaDePessoas) throws FileNotFoundException {
+        listaDePessoas = new ListaDePessoas();
+        Scanner leitor = new Scanner(arquivoDePessoas);
+        while (leitor.hasNext()) {
+            String linha = leitor.nextLine();
+            listaDePessoas.inserirPessoa(montaPessoa(linha));
+        }
+        return listaDePessoas;
     }
 
-    public  void imprimeConteudoArquivo() {
+    public void atualizarArquivoControleDeCameras(ControleCameras controleCameras) throws IOException {
+
+        Writer out = new FileWriter(arquivoDeCameras.getName());
+        out.write("");
+        out.flush();
+
+        ArrayList<String> todosOsModelos = controleCameras.retornaTodosOsModelos();
+        for (String modelo : todosOsModelos) {
+            ArrayList<CamerasIP> camerasDoModelo = controleCameras.retornaListaDoModelo(modelo);
+            for (CamerasIP cameraip : camerasDoModelo) {
+                salvarCamera(cameraip,controleCameras);
+            }
+        }
+
+    }
+
+
+    /**
+     * @param modo = 1 imprime arquivo de cameras
+     *             = 2 imprime arquivo de pessoas
+     */
+    public  String imprimeConteudoArquivo(int modo) {
         try {
-            Scanner leitor = new Scanner(arquivo);
-            while (leitor.hasNext()) {
-                String linha = leitor.nextLine();
-                System.out.println(linha);
+            switch (modo) {
+                case 1:
+                   Scanner leitor = new Scanner(arquivoDeCameras);
+                    StringBuilder sb = new StringBuilder();
+                    while (leitor.hasNext()) {
+                        String linha = leitor.nextLine();
+                        sb.append(linha).append('\n');
+                    }
+                    return sb.toString();
+
+                case 2:
+                     Scanner leitor2 = new Scanner(arquivoDePessoas);
+                    StringBuilder sb2 = new StringBuilder();
+                    while (leitor2.hasNext()) {
+                        String linha = leitor2.nextLine();
+                        sb2.append(linha).append('\n');
+                    }
+                    return sb2.toString();
+
+                default:
+                    throw new IllegalStateException("Valor invalido " + modo);
             }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
-    public  void salvarCamera(CamerasIP camerasIP) {//throws IOException {
-
-        FileWriter fwArquivo = null;
-        BufferedWriter bw;
-        try {
-            if (!arquivo.exists()) {
-                fwArquivo = new FileWriter(arquivo, !arquivo.exists()); //parametro do tipo FILE
-                bw = new BufferedWriter(fwArquivo);
-                bw.write(camerasIP.toString() + "\n");
-                bw.close();
-                fwArquivo.close();
 
 
-            } else {
-                // se true, ele concatena, se false ele cria ou zera o arquivo
-                fwArquivo = new FileWriter(arquivo, true); //parametro do tipo FILE
-                bw = new BufferedWriter(fwArquivo);
-                bw.write(camerasIP.toString() + "\n");
-                bw.close();
-                fwArquivo.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public  boolean salvarCamera(CamerasIP camerasIP, ControleCameras controleCameras) throws IOException   {//throws IOException {
+
+       if(controleCameras.verificaCamera(camerasIP.getSerialNumber())){
+           return false;
+       }
+       else {
+           FileWriter fwArquivo = null;
+           BufferedWriter bw;
+
+           if (!arquivoDeCameras.exists()) {
+               fwArquivo = new FileWriter(arquivoDeCameras, !arquivoDeCameras.exists()); //parametro do tipo FILE
+               bw = new BufferedWriter(fwArquivo);
+               bw.write(camerasIP.toString() + "\n");
+               bw.close();
+               fwArquivo.close();
+
+
+           } else {
+               // se true, ele concatena, se false ele cria ou zera o arquivo
+               fwArquivo = new FileWriter(arquivoDeCameras, true); //parametro do tipo FILE
+               bw = new BufferedWriter(fwArquivo);
+               bw.write(camerasIP.toString() + "\n");
+               bw.close();
+               fwArquivo.close();
+           }
+       }
+       return true;
     }
 
-//    //public void salvarCamera(CamerasIP camerasIP) throws IOException {
-//
-//        try {
-//
-//            FileOutputStream fout = new FileOutputStream(arquivo);
-//            ObjectOutputStream oos = new ObjectOutputStream(fout);
-//
-//            oos.writeObject(camerasIP);
-//
-//            oos.flush(); //Descarregar o flush
-//            oos.close();
-//            fout.close();
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void salvarPessoa(){
 
-    public CamerasIP lerCamerasIP() throws IOException, ClassNotFoundException {
-        try {
 
-            FileInputStream fis = new FileInputStream(arquivo);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            CamerasIP p = (CamerasIP) ois.readObject();
-            ois.close();
-            fis.close();
-            return p;
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
-    public CamerasIP montaCamera(String linha){
+
+    private CamerasIP montaCamera(String linha){
 
         String modelo = linha.substring(linha.indexOf('[') + 1,linha.indexOf(']'));
         linha = linha.substring(linha.indexOf(']')+ 1,linha.lastIndexOf(']')+1);
@@ -115,5 +144,36 @@ public class Arquivo {
         camerasIP.setLocal(local);
         return camerasIP;
     }
+    private Pessoa montaPessoa(String linha){
 
+        String nome = linha.substring(linha.indexOf('[') + 1,linha.indexOf(']'));
+        linha = linha.substring(linha.indexOf(']')+ 1,linha.lastIndexOf(']')+1);
+
+        String matricula = linha.substring(linha.indexOf('[')+1,linha.indexOf(']'));
+        linha = linha.substring(linha.indexOf(']')+ 1,linha.lastIndexOf(']')+1);
+
+        String email = linha.substring(linha.indexOf('[')+1,linha.indexOf(']'));
+
+        return new Pessoa(nome, matricula, email);
+
+    }
+
+
+
+ //ler camera
+    //  //  public CamerasIP lerCamerasIP() throws IOException, ClassNotFoundException {
+//        try {
+//
+//            FileInputStream fis = new FileInputStream(arquivoDeCameras);
+//            ObjectInputStream ois = new ObjectInputStream(fis);
+//            CamerasIP p = (CamerasIP) ois.readObject();
+//            ois.close();
+//            fis.close();
+//            return p;
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 }
