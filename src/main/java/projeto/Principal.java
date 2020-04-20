@@ -16,6 +16,11 @@ public class Principal {
 
         int menu = 0;
         int flagRemover = 0;
+
+        controleCameras = arq.puxarArquivoCameras(controleCameras);
+        listaDePessoas = arq.puxarArquivoPessoas(listaDePessoas);
+
+
         while (menu == 0) {
 
            if(flagRemover != 0){
@@ -35,8 +40,7 @@ public class Principal {
 
             //Sempre deve ser informado no inicio da execução
 
-            controleCameras = arq.puxarArquivoCameras(controleCameras);
-            listaDePessoas = arq.puxarArquivoPessoas(listaDePessoas);
+
             arq.atualizarArquivoControleDeCameras(controleCameras);
 
             System.out.println("-------------Controle de Amostras-------------");
@@ -60,10 +64,9 @@ public class Principal {
                     String MAC = recebeMAC();
                     subirTela();
 
-                    if(arq.salvarCamera(new CamerasIP(modelo,numeroDeSerie,MAC), controleCameras)) {
-                        System.out.println("Camera adicionada ao Armário");
-                    }
-                    else System.out.println("Este NS ja está cadastrado!!  Não foi Adicionado ao armário");
+                    controleCameras = arq.salvarCamera(new CamerasIP(modelo,numeroDeSerie,MAC), controleCameras);
+                    System.out.println("Camera adicionada ao Armário");
+
                     break;
 
                 case 2:

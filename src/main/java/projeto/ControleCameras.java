@@ -21,6 +21,9 @@ public class ControleCameras {
      * @return false = não foi possível inserir a amostra no controle
      *  true = camera inserida no controle de amostras
      */
+
+
+    //OK
     public boolean addCamera(CamerasIP cameraIP)    {
 
         if (controle.containsKey(cameraIP.getModelo())){
@@ -46,8 +49,12 @@ public class ControleCameras {
                     return  false;
                 }
             }
-            return listaCamera.add(cameraIP);
+
+            listaCamera.add(cameraIP);
+            controle.put(cameraIP.getModelo(), listaCamera);
+            return true;
         }
+
 
         else {
             ArrayList<CamerasIP> novoModelo = new ArrayList<>();
@@ -57,6 +64,7 @@ public class ControleCameras {
         }
     }
 
+    //OK
     public  boolean removerCamerasIP(String numeroDeSerie){ //Necessario remover camera pelo NS
 
          listaModelos = retornaTodosOsModelos();
@@ -73,6 +81,7 @@ public class ControleCameras {
 
     }
 
+    //OK
     public CamerasIP buscarCamera(String numeroDeSerie){
 
         listaModelos = retornaTodosOsModelos();
@@ -87,6 +96,7 @@ public class ControleCameras {
         throw new IllegalArgumentException("Numero de série não encontrado");
     }
 
+    //OK
     public boolean verificaCamera(String numeroDeSerie){
 
         listaModelos = retornaTodosOsModelos();
@@ -100,8 +110,6 @@ public class ControleCameras {
         }
        return false;
     }
-
-
 
     public  ArrayList<String> retornaTodosOsModelos(){
         listaModelos.addAll(controle.keySet());

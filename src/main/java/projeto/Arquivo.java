@@ -15,6 +15,8 @@ public class Arquivo {
         this.arquivoDePessoas = new File(arquivoPessoas);
     }
 
+
+
     public ControleCameras puxarArquivoCameras(ControleCameras listaDeCameras) throws FileNotFoundException {
 
             listaDeCameras = new ControleCameras();
@@ -38,19 +40,18 @@ public class Arquivo {
         return listaDePessoas;
     }
 
+    //NOK
     public void atualizarArquivoControleDeCameras(ControleCameras controleCameras) throws IOException {
 
-        Writer out = new FileWriter(arquivoDeCameras.getName());
-        out.write("");
-        out.flush();
 
-        ArrayList<String> todosOsModelos = controleCameras.retornaTodosOsModelos();
-        for (String modelo : todosOsModelos) {
-            ArrayList<CamerasIP> camerasDoModelo = controleCameras.retornaListaDoModelo(modelo);
-            for (CamerasIP cameraip : camerasDoModelo) {
-                salvarCamera(cameraip,controleCameras);
-            }
-        }
+        FileWriter arq = new FileWriter(arquivoDeCameras.getName());
+        PrintWriter gravarArq = new PrintWriter(arq);
+        String arquivoNovo = controleCameras.toString();
+
+        gravarArq.printf(arquivoNovo);
+
+        arq.close();
+
 
     }
 
@@ -92,12 +93,8 @@ public class Arquivo {
 
 
 
-    public  boolean salvarCamera(CamerasIP camerasIP, ControleCameras controleCameras) throws IOException   {//throws IOException {
+    public ControleCameras salvarCamera(CamerasIP camerasIP, ControleCameras controleCameras) throws IOException   {//throws IOException {
 
-       if(controleCameras.verificaCamera(camerasIP.getSerialNumber())){
-           return false;
-       }
-       else {
            FileWriter fwArquivo = null;
            BufferedWriter bw;
 
@@ -117,14 +114,16 @@ public class Arquivo {
                bw.close();
                fwArquivo.close();
            }
-       }
-       return true;
+
+       controleCameras.addCamera(camerasIP);
+       return controleCameras;
     }
 
     public void salvarPessoa(){
 
 
     }
+
 
 
     private CamerasIP montaCamera(String linha){
@@ -159,21 +158,4 @@ public class Arquivo {
     }
 
 
-
- //ler camera
-    //  //  public CamerasIP lerCamerasIP() throws IOException, ClassNotFoundException {
-//        try {
-//
-//            FileInputStream fis = new FileInputStream(arquivoDeCameras);
-//            ObjectInputStream ois = new ObjectInputStream(fis);
-//            CamerasIP p = (CamerasIP) ois.readObject();
-//            ois.close();
-//            fis.close();
-//            return p;
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
 }
