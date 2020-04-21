@@ -65,9 +65,14 @@ public class Principal {
 
 
         }
+
+
+
         subirTela();
         System.out.println("-------------Controle de Amostras-------------");
         System.out.println("Usuario Logado: " + usuarioLogado.getNome());
+
+
         while (menu == 0) {
 
            if(flagRemover != 0){
@@ -135,7 +140,7 @@ public class Principal {
                             controleCameras.alterarResponsavel(ns, usuarioLogado.getNome());
                         }
                         else{
-                            System.out.println("Câmera já emprestada, verifique com Responsável");
+                            System.out.println("Câmera já emprestada, verifique com Responsável (" + emprestimo.getResponsavel() + ")");
                         }
                     }
                     catch (IllegalArgumentException e){
@@ -143,12 +148,34 @@ public class Principal {
                     }
                     break;
 
+                case 5:
+                    subirTela();
+                    String recebe = recebeNS();
+                    try {
+                        CamerasIP verifica = controleCameras.buscarCamera(recebe);
+                        if(verifica.getResponsavel().equals("livre")){
+                            System.out.println("Esta Câmera não está emprestada");
+                        }
+                        else{
+                            System.out.println("O Responsável por ela é :" + verifica.getResponsavel());
+                            System.out.print("Deseja devolve-la? (S/N)");
+                            String choice = teclado.next();
+                            if(choice.equals("S")){
+                                controleCameras.alterarResponsavel(recebe,"livre");
+                                System.out.println("Camera Devolvida.");
+                            }
+                        }
+                    }
+                    catch (IllegalArgumentException e){
+                        System.out.println("Numero de Série não encontrado");
+                    }
+                    break;
+
+                case 6:
+                    menu++;
 
                 default:
                     menu++;
-
-
-
             }
         }
 
@@ -165,6 +192,7 @@ public class Principal {
             System.out.println("  ");
         }
     }
+
     private static String escolheModelo(){
         imprimeModelos();
         System.out.print("Selecione o Modelo da Câmera (pelo numero): ");
@@ -182,6 +210,7 @@ public class Principal {
             default: throw new IllegalArgumentException("Numero não Válido");
         }
     }
+
     private static void imprimeModelos(){
         System.out.println("1 - VIP 5550 DZ IA");
         System.out.println("2 - VIP 5550 Z IA");
@@ -192,21 +221,25 @@ public class Principal {
         System.out.println("7 - VIP 3240 D IA");
         System.out.println("8 - VIP 3240  IA");
     }
+
     private static String recebeNS(){
         System.out.println("Informe o Numero de Série: ");
         Scanner teclado = new Scanner(System.in);
         return teclado.next();
     }
+
     private static String recebeMAC(){
         System.out.println("Informe o MAC: ");
         Scanner teclado = new Scanner(System.in);
         return teclado.next();
     }
+
     private static String recebeMatricula(){
         System.out.println("Informe sua matricula:");
         Scanner teclado = new Scanner(System.in);
         return teclado.next();
     }
+
     private static Pessoa cadastrarPessoa(){
 
         System.out.println("Informe o nome do usuário: ");
@@ -224,6 +257,7 @@ public class Principal {
 
         return new Pessoa(nome, matricula,email);
     }
+
     private static void imprimeMenu(){
 
         System.out.println("Escolha entre uma das opções");
@@ -232,7 +266,7 @@ public class Principal {
         System.out.println("3- Buscar por uma câmera");
         System.out.println("4- Retirar uma Camera para empréstimo");
         System.out.println("5- Devolver uma Câmera");
-        System.out.println("6- Cadastrar Usuario");
+        System.out.println("6- Sair");
     }
 
 }

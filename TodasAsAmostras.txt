@@ -1,1 +1,0 @@
-Modelo:  [VIP 5550 DZ IA]   Numero de Serie: [1234]   MAC:  [abc]   Local: [armario]   Responsavel: [Alexandre]

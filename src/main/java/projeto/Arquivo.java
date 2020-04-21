@@ -123,7 +123,7 @@ public class Arquivo {
         BufferedWriter bw;
 
         if (!arquivoDePessoas.exists()) {
-            fwArquivo = new FileWriter(arquivoDeCameras, !arquivoDeCameras.exists()); //parametro do tipo FILE
+            fwArquivo = new FileWriter(arquivoDePessoas, !arquivoDePessoas.exists()); //parametro do tipo FILE
             bw = new BufferedWriter(fwArquivo);
             bw.write(pessoa.toString() + "\n");
             bw.close();
@@ -132,7 +132,7 @@ public class Arquivo {
 
         } else {
             // se true, ele concatena, se false ele cria ou zera o arquivo
-            fwArquivo = new FileWriter(arquivoDeCameras, true); //parametro do tipo FILE
+            fwArquivo = new FileWriter(arquivoDePessoas, true); //parametro do tipo FILE
             bw = new BufferedWriter(fwArquivo);
             bw.write(pessoa.toString() + "\n");
             bw.close();
