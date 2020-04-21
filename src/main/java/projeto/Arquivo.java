@@ -55,7 +55,6 @@ public class Arquivo {
 
     }
 
-
     /**
      * @param modo = 1 imprime arquivo de cameras
      *             = 2 imprime arquivo de pessoas
@@ -119,7 +118,29 @@ public class Arquivo {
        return controleCameras;
     }
 
-    public void salvarPessoa(){
+    public ListaDePessoas salvarPessoa(Pessoa pessoa, ListaDePessoas listaDePessoas) throws IOException {
+        FileWriter fwArquivo = null;
+        BufferedWriter bw;
+
+        if (!arquivoDePessoas.exists()) {
+            fwArquivo = new FileWriter(arquivoDeCameras, !arquivoDeCameras.exists()); //parametro do tipo FILE
+            bw = new BufferedWriter(fwArquivo);
+            bw.write(pessoa.toString() + "\n");
+            bw.close();
+            fwArquivo.close();
+
+
+        } else {
+            // se true, ele concatena, se false ele cria ou zera o arquivo
+            fwArquivo = new FileWriter(arquivoDeCameras, true); //parametro do tipo FILE
+            bw = new BufferedWriter(fwArquivo);
+            bw.write(pessoa.toString() + "\n");
+            bw.close();
+            fwArquivo.close();
+        }
+
+        listaDePessoas.inserirPessoa(pessoa);
+        return listaDePessoas;
 
 
     }
@@ -137,9 +158,15 @@ public class Arquivo {
         String MAC = linha.substring(linha.indexOf('[')+1,linha.indexOf(']'));
         linha = linha.substring(linha.indexOf(']')+1,linha.lastIndexOf(']')+1);
 
+
         String local = linha.substring(linha.indexOf('[')+1,linha.indexOf(']'));
+        linha = linha.substring(linha.indexOf(']')+1,linha.lastIndexOf(']')+1);
+
+        String responsavel = linha.substring(linha.indexOf('[')+1,linha.indexOf(']'));
+
 
         CamerasIP camerasIP = new CamerasIP(modelo,numeroDeSerie,MAC);
+        camerasIP.setResponsavel(responsavel);
         camerasIP.setLocal(local);
         return camerasIP;
     }

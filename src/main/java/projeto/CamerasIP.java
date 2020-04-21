@@ -6,6 +6,7 @@ public class CamerasIP {
     private String serialNumber;
     private String MAC;
     private String local = "armario";
+    private String responsavel = "livre";
 
 
     public CamerasIP(String modelo, String serialNumber, String MAC) {
@@ -46,12 +47,21 @@ public class CamerasIP {
         this.local = local;
     }
 
+    public String getResponsavel() {
+        return responsavel;
+    }
+
+    public void setResponsavel(String responsavel) {
+        this.responsavel = responsavel;
+    }
+
     @Override
     public String toString() {
         return "CamerasIP " +
                 ", Modelo= [" + modelo +
                 "] Numero De Série= ["  + serialNumber +
                 "] MAC= [" + MAC +
-                "] Local = [" + local + "]";
+                "] Local = [" + local  +
+                "] Responsável = [" + responsavel + "]";
     }
 }

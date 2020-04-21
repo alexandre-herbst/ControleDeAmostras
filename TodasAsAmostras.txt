@@ -1,3 +1,1 @@
-Modelo:  [VIP 3430 B G2]   Numero de Serie: [1234]   MAC:  [abc123]   Local: [armario]
-Modelo:  [VIP 5550 Z IA]   Numero de Serie: [12345]   MAC:  [avs123]   Local: [armario]
-Modelo:  [VIP 3230 D G2]   Numero de Serie: [12345]   MAC:  [abs23]   Local: [armario]
+Modelo:  [VIP 5550 DZ IA]   Numero de Serie: [1234]   MAC:  [abc]   Local: [armario]   Responsavel: [Alexandre]

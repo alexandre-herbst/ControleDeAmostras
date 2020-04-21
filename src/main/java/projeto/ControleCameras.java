@@ -96,6 +96,12 @@ public class ControleCameras {
         throw new IllegalArgumentException("Numero de série não encontrado");
     }
 
+    public void alterarResponsavel(String numSerie, String resposavel){
+        CamerasIP camerasIP = buscarCamera(numSerie);
+        camerasIP.setResponsavel(resposavel);
+    }
+
+
     //OK
     public boolean verificaCamera(String numeroDeSerie){
 
@@ -132,7 +138,8 @@ public class ControleCameras {
             sb.append("Modelo:  [").append(camerasIP.getModelo())
                     .append("]   Numero de Serie: [").append(camerasIP.getSerialNumber())
                     .append("]   MAC:  [").append(camerasIP.getMAC())
-                    .append("]   Local: [").append(camerasIP.getLocal()).append("]").append('\n');
+                    .append("]   Local: [").append(camerasIP.getLocal())
+                    .append("]   Responsavel: [").append(camerasIP.getResponsavel()).append("]").append('\n');
         }
         return sb.toString();
     }
