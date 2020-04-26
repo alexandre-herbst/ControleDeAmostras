@@ -1,6 +1,11 @@
 package projeto;
 
+
+
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,7 +15,8 @@ public class Arquivo {
     private File arquivoDePessoas;
 
 
-    public Arquivo(String arquivoCameras, String arquivoPessoas) {
+    public Arquivo(String arquivoCameras, String arquivoPessoas) throws IOException {
+
         this.arquivoDeCameras = new File(arquivoCameras);
         this.arquivoDePessoas = new File(arquivoPessoas);
     }
@@ -146,6 +152,18 @@ public class Arquivo {
     }
 
 
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = inputStream.read(buffer)) != -1) {
+            result.write(buffer, 0, length);
+        }
+
+        return result.toString(StandardCharsets.UTF_8.name());
+
+    }
 
     private CamerasIP montaCamera(String linha){
 
@@ -183,6 +201,11 @@ public class Arquivo {
         return new Pessoa(nome, matricula, email);
 
     }
+
+
+
+
+
 
 
 }

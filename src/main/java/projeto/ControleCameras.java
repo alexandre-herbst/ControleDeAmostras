@@ -22,8 +22,6 @@ public class ControleCameras {
      *  true = camera inserida no controle de amostras
      */
 
-
-    //OK
     public boolean addCamera(CamerasIP cameraIP)    {
 
         if (controle.containsKey(cameraIP.getModelo())){
@@ -46,12 +44,14 @@ public class ControleCameras {
                     flag++;
                 }
                 if (flag > 0){
+
                     return  false;
                 }
             }
 
             listaCamera.add(cameraIP);
             controle.put(cameraIP.getModelo(), listaCamera);
+            System.out.println("Camera adicionada ao Armário");
             return true;
         }
 
@@ -64,7 +64,6 @@ public class ControleCameras {
         }
     }
 
-    //OK
     public  boolean removerCamerasIP(String numeroDeSerie){ //Necessario remover camera pelo NS
 
          listaModelos = retornaTodosOsModelos();
@@ -81,7 +80,6 @@ public class ControleCameras {
 
     }
 
-    //OK
     public CamerasIP buscarCamera(String numeroDeSerie){
 
         listaModelos = retornaTodosOsModelos();
@@ -101,8 +99,6 @@ public class ControleCameras {
         camerasIP.setResponsavel(resposavel);
     }
 
-
-    //OK
     public boolean verificaCamera(String numeroDeSerie){
 
         listaModelos = retornaTodosOsModelos();
@@ -118,6 +114,7 @@ public class ControleCameras {
     }
 
     public  ArrayList<String> retornaTodosOsModelos(){
+        listaModelos = new ArrayList<>();
         listaModelos.addAll(controle.keySet());
         return listaModelos;
     }
@@ -128,6 +125,23 @@ public class ControleCameras {
         }
         else  throw new IllegalArgumentException("Modelo não cadastrado");
 
+    }
+
+    public ArrayList<CamerasIP> retornaListaDoResposavel(Pessoa resposavel){
+
+        ArrayList<CamerasIP> listaDoResponsavel = new ArrayList<>();
+
+        ArrayList<String> modelos = retornaTodosOsModelos();
+
+        for (String modelo : modelos) {
+            ArrayList<CamerasIP> camerasIPS = retornaListaDoModelo(modelo);
+            for (CamerasIP amostra : camerasIPS) {
+                if(amostra.getResponsavel().equals(resposavel.getNome())){
+                    listaDoResponsavel.add(amostra);
+                }
+            }
+        }
+        return  listaDoResponsavel;
     }
 
     public String imprimeListaDoModelo(String modelo){

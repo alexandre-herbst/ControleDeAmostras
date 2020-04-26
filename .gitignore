@@ -343,6 +343,8 @@ gradle-app.setting
 ### Gradle Patch ###
 **/build/
 
+!libs/*.jar
+
 # End of https://www.gitignore.io/api/c,c++,java,linux,gradle,python,intellij+all
 
 © 2020 GitHub, Inc.

@@ -4,13 +4,17 @@ import javafx.scene.SceneAntialiasing;
 
 import javax.print.DocFlavor;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Principal {
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
 
+// Declarações
+        Scanner teclado = new Scanner(System.in);
         int menu = 0;
         int flagRemover = 0;
         int login = 0;
@@ -18,23 +22,22 @@ public class Principal {
         ControleCameras controleCameras = new ControleCameras();
         ListaDePessoas listaDePessoas = new ListaDePessoas();
 
-        String caminhoAmostras = "TodasAsAmostras.txt";
-        String caminhoPessoas = "TodasPessoas.txt";
-
-        Arquivo arq = new Arquivo(caminhoAmostras,caminhoPessoas);
-
+        Arquivo arq = new Arquivo("TodasAsAmostras.txt", "TodasPessoas.txt");
         Pessoa usuarioLogado = new Pessoa("adm", "adm", "adm");
+
 
         controleCameras = arq.puxarArquivoCameras(controleCameras);
         listaDePessoas = arq.puxarArquivoPessoas(listaDePessoas);
 
 
+
+//Tela de Login
         while (login == 0){
             System.out.println("-------LOGIN-------");
             System.out.println("Ecolha uma das opcões");
             System.out.println("1- Login");
             System.out.println("2- Registrar");
-            Scanner teclado = new Scanner(System.in);
+
             int opcao = teclado.nextInt();
 
 
@@ -67,18 +70,22 @@ public class Principal {
         }
 
 
-
         subirTela();
         System.out.println("-------------Controle de Amostras-------------");
         System.out.println("Usuario Logado: " + usuarioLogado.getNome());
 
 
+
+//Menu
         while (menu == 0) {
 
-           if(flagRemover != 0){
+            Email SMTP = new Email("controle.de.amostras.itb@gmail.com", "intelbras");
+
+
+            if(flagRemover != 0){
 
                System.out.print("Informe o Numero de Série da Camera que deseja remover: ");
-               Scanner teclado = new Scanner(System.in);
+
                String NS = teclado.next();
                if(controleCameras.removerCamerasIP(NS)){
                    System.out.println("Camera removida");
@@ -88,11 +95,11 @@ public class Principal {
                flagRemover = 0;
            }
 
-            imprimeMenu();
 
+            // Sempre deve-se atualizar o as listas em memoria
+            imprimeMenu();
             arq.atualizarArquivoControleDeCameras(controleCameras);
 
-            Scanner teclado = new Scanner(System.in);
             int opcao = teclado.nextInt();
 
             switch (opcao) {
@@ -106,7 +113,8 @@ public class Principal {
                     subirTela();
 
                     controleCameras = arq.salvarCamera(new CamerasIP(modelo,numeroDeSerie,MAC), controleCameras);
-                    System.out.println("Camera adicionada ao Armário");
+
+
 
                     break;
 
@@ -122,8 +130,7 @@ public class Principal {
                         System.out.println("Informações da câmera: ");
                         System.out.println(buscada.toString());
                         System.out.println(" ");
-                        System.out.println("Digite qualquer coisa para sair : ");
-                        teclado.next();
+                        segurarTela();
                     }
                     catch (IllegalArgumentException e){
                     System.out.println("Numero de Série não encontrado");
@@ -138,10 +145,13 @@ public class Principal {
 
                         if(emprestimo.getResponsavel().equals("livre")) {
                             controleCameras.alterarResponsavel(ns, usuarioLogado.getNome());
+                            System.out.println("Amostra retirada em nome de: " + usuarioLogado.getNome());
+                            SMTP.enviarEmailLembrete(usuarioLogado, controleCameras.retornaListaDoResposavel(usuarioLogado), "Retirada de Amostra CA");
                         }
                         else{
                             System.out.println("Câmera já emprestada, verifique com Responsável (" + emprestimo.getResponsavel() + ")");
                         }
+
                     }
                     catch (IllegalArgumentException e){
                         System.out.println("Numero de Série não encontrado");
@@ -163,6 +173,7 @@ public class Principal {
                             if(choice.equals("S")){
                                 controleCameras.alterarResponsavel(recebe,"livre");
                                 System.out.println("Camera Devolvida.");
+                                SMTP.enviarEmailLembrete(usuarioLogado, controleCameras.retornaListaDoResposavel(usuarioLogado), "Amostra Devolvida ao CA");
                             }
                         }
                     }
@@ -172,7 +183,14 @@ public class Principal {
                     break;
 
                 case 6:
-                    menu++;
+
+
+                    break;
+                case 7:
+                    System.out.println(controleCameras.toString());
+                    System.out.println("Digite qualquer coisa para voltar");
+                    teclado.next();
+                    break;
 
                 default:
                     menu++;
@@ -188,7 +206,7 @@ public class Principal {
 
 
     private static void subirTela(){
-        for (int i = 0; i <20 ; i++) {
+        for (int i = 0; i <50 ; i++) {
             System.out.println("  ");
         }
     }
@@ -261,12 +279,19 @@ public class Principal {
     private static void imprimeMenu(){
 
         System.out.println("Escolha entre uma das opções");
-        System.out.println("1- Inserir  uma Câmera no Armário");
+        System.out.println("1- Inserir uma Câmera no Armário");
         System.out.println("2- Remover uma Câmera no Armário");
         System.out.println("3- Buscar por uma câmera");
         System.out.println("4- Retirar uma Camera para empréstimo");
         System.out.println("5- Devolver uma Câmera");
-        System.out.println("6- Sair");
+        System.out.println("6- Enviar email");
+        System.out.println("7- Listar todas as Cameras");
+        System.out.println("8- Sair");
     }
 
+    private static void segurarTela(){
+        System.out.println("Digite qualquer coisa para sair");
+        Scanner teclado = new Scanner(System.in);
+        teclado.next();
+    }
 }

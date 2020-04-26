@@ -1,0 +1,6 @@
+Modelo:  [VIP 5550 DZ IA]   Numero de Serie: [12345]   MAC:  [asfs]   Local: [armario]   Responsavel: [livre]
+Modelo:  [VIP 5550 DZ IA]   Numero de Serie: [123]   MAC:  [aaa]   Local: [armario]   Responsavel: [livre]
+Modelo:  [VIP 5550 DZ IA]   Numero de Serie: [1234]   MAC:  [aaaaa]   Local: [armario]   Responsavel: [livre]
+Modelo:  [VIP 5550 Z IA]   Numero de Serie: [1523]   MAC:  [sadas]   Local: [armario]   Responsavel: [Alexandre]
+Modelo:  [VIP 3240 IA]   Numero de Serie: [1242151]   MAC:  [safa]   Local: [armario]   Responsavel: [livre]
+Modelo:  [VIP 3430 D G2]   Numero de Serie: [123456]   MAC:  [1235fg]   Local: [armario]   Responsavel: [Alexandre]

@@ -58,10 +58,10 @@ public class CamerasIP {
     @Override
     public String toString() {
         return "CamerasIP " +
-                ", Modelo= [" + modelo +
-                "] Numero De Série= ["  + serialNumber +
-                "] MAC= [" + MAC +
-                "] Local = [" + local  +
-                "] Responsável = [" + responsavel + "]";
+                "->  Modelo=  [" + modelo +
+                "]     Numero De Série=  ["  + serialNumber +
+                "]     MAC=  [" + MAC +
+                "]     Local=  [" + local  +
+                "]     Responsável=  [" + responsavel + "]";
     }
 }

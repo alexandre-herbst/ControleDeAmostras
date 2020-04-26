@@ -1,5 +1,7 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'java'
+
 }
 
 group 'org.example'
@@ -7,10 +9,21 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'projeto.Principal'
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-email
+    compile group: 'org.apache.commons', name: 'commons-email', version: '1.5'
+
+    implementation files('libs/Controle De Amostras-1.0-SNAPSHOT.jar')
 }
