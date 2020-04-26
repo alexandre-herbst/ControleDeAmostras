@@ -114,8 +114,6 @@ public class Principal {
 
                     controleCameras = arq.salvarCamera(new CamerasIP(modelo,numeroDeSerie,MAC), controleCameras);
 
-
-
                     break;
 
                 case 2:

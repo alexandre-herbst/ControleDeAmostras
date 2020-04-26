@@ -51,7 +51,6 @@ public class ControleCameras {
 
             listaCamera.add(cameraIP);
             controle.put(cameraIP.getModelo(), listaCamera);
-            System.out.println("Camera adicionada ao Armário");
             return true;
         }
 

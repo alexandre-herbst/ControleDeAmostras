@@ -17,8 +17,8 @@ public class Arquivo {
 
     public Arquivo(String arquivoCameras, String arquivoPessoas) throws IOException {
 
-        this.arquivoDeCameras = new File(arquivoCameras);
-        this.arquivoDePessoas = new File(arquivoPessoas);
+        this.arquivoDeCameras = new File(getClass().getClassLoader().getResource(arquivoCameras).getFile());
+        this.arquivoDePessoas = new File(getClass().getClassLoader().getResource(arquivoPessoas).getFile());
     }
 
 
@@ -121,6 +121,7 @@ public class Arquivo {
            }
 
        controleCameras.addCamera(camerasIP);
+        System.out.println("Camera adicionada ao Armário");
        return controleCameras;
     }
 
