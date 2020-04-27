@@ -15,31 +15,91 @@ public class Arquivo {
     private File arquivoDePessoas;
 
 
-    public Arquivo(String arquivoCameras, String arquivoPessoas) throws IOException {
+    public Arquivo(String arquivoCameras, String arquivoPessoas){
 
         this.arquivoDeCameras = new File(getClass().getClassLoader().getResource(arquivoCameras).getFile());
         this.arquivoDePessoas = new File(getClass().getClassLoader().getResource(arquivoPessoas).getFile());
+
     }
 
 
 
-    public ControleCameras puxarArquivoCameras(ControleCameras listaDeCameras) throws FileNotFoundException {
+
+
+    public void lerArquivo(String arquivo) {
+//        File arquivo = new File(getClass().getClassLoader().getResource("produtos.txt").getFile());
+
+        // Para pegar o arquivo quando estiver dentro um .jar
+        InputStream is = getClass().getResourceAsStream("/resources/" + arquivo);
+
+        // Para pegar o arquivo quando estiver executando pela IDE
+        if (is == null){
+            is = getClass().getClassLoader().getResourceAsStream(arquivo);
+        }
+        try {
+            Scanner leitor = new Scanner(is);
+
+            // varrendo o conteúdo do arquivo linha por linha
+            while (leitor.hasNextLine()) {
+                System.out.println(leitor.nextLine());
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erro ao tentar ler o arquivo: " + e.toString());
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public ControleCameras puxarArquivoCameras(ControleCameras listaDeCameras, String arquivo) throws FileNotFoundException {
 
             listaDeCameras = new ControleCameras();
 
-            Scanner leitor = new Scanner(arquivoDeCameras);
-            while (leitor.hasNext()) {
+            InputStream is = getClass().getResourceAsStream("/resources/" + arquivo);
+
+            if (is == null){
+            is = getClass().getClassLoader().getResourceAsStream(arquivo);
+            }
+
+            Scanner leitor = new Scanner(is);
+
+            // varrendo o conteúdo do arquivo linha por linha
+            while (leitor.hasNextLine()) {
                 String linha = leitor.nextLine();
                 listaDeCameras.addCamera(montaCamera(linha));
             }
-            return  listaDeCameras;
 
+            return  listaDeCameras;
         }
 
-    public ListaDePessoas puxarArquivoPessoas(ListaDePessoas listaDePessoas) throws FileNotFoundException {
+    public ListaDePessoas puxarArquivoPessoas(ListaDePessoas listaDePessoas, String arquivo ) throws FileNotFoundException {
         listaDePessoas = new ListaDePessoas();
-        Scanner leitor = new Scanner(arquivoDePessoas);
-        while (leitor.hasNext()) {
+
+        InputStream is = getClass().getResourceAsStream("/resources/" + arquivo);
+
+        if (is == null){
+            is = getClass().getClassLoader().getResourceAsStream(arquivo);
+        }
+
+
+        Scanner leitor = new Scanner(is);
+
+        while (leitor.hasNextLine()) {
             String linha = leitor.nextLine();
             listaDePessoas.inserirPessoa(montaPessoa(linha));
         }
@@ -103,25 +163,16 @@ public class Arquivo {
            FileWriter fwArquivo = null;
            BufferedWriter bw;
 
-           if (!arquivoDeCameras.exists()) {
-               fwArquivo = new FileWriter(arquivoDeCameras, !arquivoDeCameras.exists()); //parametro do tipo FILE
-               bw = new BufferedWriter(fwArquivo);
-               bw.write(camerasIP.toString() + "\n");
-               bw.close();
-               fwArquivo.close();
-
-
-           } else {
                // se true, ele concatena, se false ele cria ou zera o arquivo
                fwArquivo = new FileWriter(arquivoDeCameras, true); //parametro do tipo FILE
                bw = new BufferedWriter(fwArquivo);
                bw.write(camerasIP.toString() + "\n");
                bw.close();
                fwArquivo.close();
-           }
+
 
        controleCameras.addCamera(camerasIP);
-        System.out.println("Camera adicionada ao Armário");
+       System.out.println("Camera adicionada ao Armário");
        return controleCameras;
     }
 

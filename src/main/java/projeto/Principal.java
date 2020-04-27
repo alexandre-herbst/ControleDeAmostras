@@ -26,8 +26,8 @@ public class Principal {
         Pessoa usuarioLogado = new Pessoa("adm", "adm", "adm");
 
 
-        controleCameras = arq.puxarArquivoCameras(controleCameras);
-        listaDePessoas = arq.puxarArquivoPessoas(listaDePessoas);
+        controleCameras = arq.puxarArquivoCameras(controleCameras, "TodasAsAmostras.txt");
+        listaDePessoas = arq.puxarArquivoPessoas(listaDePessoas,"TodasPessoas.txt");
 
 
 
