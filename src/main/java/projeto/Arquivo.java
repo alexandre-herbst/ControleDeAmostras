@@ -27,7 +27,7 @@ public class Arquivo {
 
 
     public void lerArquivo(String arquivo) {
-//        File arquivo = new File(getClass().getClassLoader().getResource("produtos.txt").getFile());
+//      File arquivo = new File(getClass().getClassLoader().getResource("produtos.txt").getFile());
 
         // Para pegar o arquivo quando estiver dentro um .jar
         InputStream is = getClass().getResourceAsStream("/resources/" + arquivo);
@@ -110,7 +110,7 @@ public class Arquivo {
     public void atualizarArquivoControleDeCameras(ControleCameras controleCameras) throws IOException {
 
 
-        FileWriter arq = new FileWriter(arquivoDeCameras.getName());
+        FileWriter arq = new FileWriter(arquivoDeCameras.getAbsolutePath());
         PrintWriter gravarArq = new PrintWriter(arq);
         String arquivoNovo = controleCameras.toString();
 

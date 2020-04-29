@@ -1,11 +1,10 @@
 package projeto;
 
-import javafx.scene.SceneAntialiasing;
 
-import javax.print.DocFlavor;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.sql.SQLOutput;
+
 import java.util.Scanner;
 
 public class Principal {
@@ -95,14 +94,18 @@ public class Principal {
                flagRemover = 0;
            }
 
-
+            arq.atualizarArquivoControleDeCameras(controleCameras);
             // Sempre deve-se atualizar o as listas em memoria
             imprimeMenu();
-            arq.atualizarArquivoControleDeCameras(controleCameras);
+
 
             int opcao = teclado.nextInt();
 
             switch (opcao) {
+
+
+
+
                 case 1:
                     subirTela();
                     String modelo = escolheModelo();
@@ -137,12 +140,21 @@ public class Principal {
 
                 case 4:
                     subirTela();
-                    try {
-                        String ns = recebeNS();
-                        CamerasIP emprestimo = controleCameras.buscarCamera(ns);
 
+
+                        CamerasIP emprestimo;
+                        listaCamerasEmprestadas(controleCameras, usuarioLogado);
+                        System.out.println("Tipo de Retirada:");
+                        try {
+                            emprestimo = tipoDeRetirada(controleCameras);
+                        }
+                        catch(IllegalArgumentException e){
+                            break;
+                        }
+
+                    try {
                         if(emprestimo.getResponsavel().equals("livre")) {
-                            controleCameras.alterarResponsavel(ns, usuarioLogado.getNome());
+                            controleCameras.alterarResponsavel(emprestimo.getSerialNumber(), usuarioLogado.getNome());
                             System.out.println("Amostra retirada em nome de: " + usuarioLogado.getNome());
                             SMTP.enviarEmailLembrete(usuarioLogado, controleCameras.retornaListaDoResposavel(usuarioLogado), "Retirada de Amostra CA");
                         }
@@ -158,18 +170,22 @@ public class Principal {
 
                 case 5:
                     subirTela();
-                    String recebe = recebeNS();
+
                     try {
-                        CamerasIP verifica = controleCameras.buscarCamera(recebe);
+
+                        listaCamerasEmprestadas(controleCameras, usuarioLogado);
+                        System.out.println("Tipo de Devolução: ");
+                        CamerasIP verifica = tipoDeRetirada(controleCameras);
+
                         if(verifica.getResponsavel().equals("livre")){
                             System.out.println("Esta Câmera não está emprestada");
                         }
                         else{
                             System.out.println("O Responsável por ela é :" + verifica.getResponsavel());
-                            System.out.print("Deseja devolve-la? (S/N)");
+                            System.out.print("Deseja devolve-la? (s/n)");
                             String choice = teclado.next();
-                            if(choice.equals("S")){
-                                controleCameras.alterarResponsavel(recebe,"livre");
+                            if(choice.equals("s")){
+                                controleCameras.alterarResponsavel(verifica.getSerialNumber(),"livre");
                                 System.out.println("Camera Devolvida.");
                                 SMTP.enviarEmailLembrete(usuarioLogado, controleCameras.retornaListaDoResposavel(usuarioLogado), "Amostra Devolvida ao CA");
                             }
@@ -202,6 +218,43 @@ public class Principal {
     }
 
 
+
+    private static CamerasIP tipoDeRetirada(ControleCameras controleCameras) {
+
+
+        System.out.println("1- Por Numero de Série");
+        System.out.println("2- Por MAC");
+        System.out.println("3- Genérica");
+        System.out.println("4- Voltar");
+
+        Scanner teclado = new Scanner(System.in);
+        int opcao = teclado.nextInt();
+        subirTela();
+
+        switch (opcao){
+
+            case 1:
+                String ns = recebeNS();
+                return controleCameras.buscarCamera(ns);
+            case 2:
+                String MAC = recebeMAC();
+                return controleCameras.bucarCameraMAC(MAC);
+            case 3:
+                return controleCameras.retornaGenerica(escolheModelo());
+
+            default:
+                throw new IllegalArgumentException("Voltar");
+        }
+
+    }
+
+    private static void listaCamerasEmprestadas(ControleCameras controleCameras, Pessoa responsavel){
+        System.out.println("As Seguintes amostras estão em seu nome:");
+        System.out.println(" ");
+        for (CamerasIP camerasIP: controleCameras.retornaListaDoResposavel(responsavel)) {
+            System.out.println(camerasIP.toString());
+        }
+    }
 
     private static void subirTela(){
         for (int i = 0; i <50 ; i++) {

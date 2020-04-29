@@ -40,7 +40,7 @@ public class Email {
 
 
              email.setMsg(sb.toString());
-             email.addTo("controle.de.amostras.itb@gmail.com");
+             email.addTo(responsavel.getEmail());
              email.buildMimeMessage();
              email.sendMimeMessage();
 

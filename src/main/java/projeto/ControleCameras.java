@@ -93,6 +93,31 @@ public class ControleCameras {
         throw new IllegalArgumentException("Numero de série não encontrado");
     }
 
+    public CamerasIP bucarCameraMAC(String MAC){
+
+        listaModelos = retornaTodosOsModelos();
+        for (String modelo : listaModelos) {
+            listaAmostras = retornaListaDoModelo(modelo);
+            for (CamerasIP cameraip : listaAmostras) {
+                if(cameraip.getMAC().equals(MAC)){
+                    return cameraip;
+                }
+            }
+        }
+        throw new IllegalArgumentException("MAC não encontrado");
+    }
+
+
+    public CamerasIP retornaGenerica(String modelo){
+
+        for (CamerasIP camerasIP : retornaListaDoModelo(modelo)) {
+            if(camerasIP.getResponsavel().equals("livre")){
+                return camerasIP;
+            }
+        }
+        throw new IllegalArgumentException("Essa câmera não possui amostas livres");
+    }
+
     public void alterarResponsavel(String numSerie, String resposavel){
         CamerasIP camerasIP = buscarCamera(numSerie);
         camerasIP.setResponsavel(resposavel);
