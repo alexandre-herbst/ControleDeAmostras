@@ -5,6 +5,7 @@ package projeto;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Principal {
@@ -21,12 +22,12 @@ public class Principal {
         ControleCameras controleCameras = new ControleCameras();
         ListaDePessoas listaDePessoas = new ListaDePessoas();
 
-        Arquivo arq = new Arquivo("TodasAsAmostras.txt", "TodasPessoas.txt");
+        Arquivo arq = new Arquivo("/Users/alexandreherbst/Desktop/Controle De Amostras/ControleDeAmostras/src/main/resources/TodasAsAmostras.txt", "/Users/alexandreherbst/Desktop/Controle De Amostras/ControleDeAmostras/src/main/resources/TodasPessoas.txt");
         Pessoa usuarioLogado = new Pessoa("adm", "adm", "adm");
 
 
-        controleCameras = arq.puxarArquivoCameras(controleCameras, "TodasAsAmostras.txt");
-        listaDePessoas = arq.puxarArquivoPessoas(listaDePessoas,"TodasPessoas.txt");
+        controleCameras = arq.puxarArquivoCameras(controleCameras, "/Users/alexandreherbst/Desktop/Controle De Amostras/ControleDeAmostras/src/main/resources/TodasAsAmostras.txt");
+        listaDePessoas = arq.puxarArquivoPessoas(listaDePessoas,"/Users/alexandreherbst/Desktop/Controle De Amostras/ControleDeAmostras/src/main/resources/TodasPessoas.txt");
 
 
 
@@ -155,6 +156,7 @@ public class Principal {
                     try {
                         if(emprestimo.getResponsavel().equals("livre")) {
                             controleCameras.alterarResponsavel(emprestimo.getSerialNumber(), usuarioLogado.getNome());
+                            subirTela();
                             System.out.println("Amostra retirada em nome de: " + usuarioLogado.getNome());
                             SMTP.enviarEmailLembrete(usuarioLogado, controleCameras.retornaListaDoResposavel(usuarioLogado), "Retirada de Amostra CA");
                         }
@@ -184,6 +186,7 @@ public class Principal {
                             System.out.println("O Responsável por ela é :" + verifica.getResponsavel());
                             System.out.print("Deseja devolve-la? (s/n)");
                             String choice = teclado.next();
+                            subirTela();
                             if(choice.equals("s")){
                                 controleCameras.alterarResponsavel(verifica.getSerialNumber(),"livre");
                                 System.out.println("Camera Devolvida.");
@@ -197,13 +200,33 @@ public class Principal {
                     break;
 
                 case 6:
+                    subirTela();
+                    System.out.println("Enviar lembrete para:");
+                    System.out.println(listaDePessoas.toString());
+                    System.out.print("Nome: ");
+                    String nome = teclado.next();
+                    try {
+                        Pessoa lembrar = listaDePessoas.buscarPessoa(nome);
+                        SMTP.enviarEmailLembrete(lembrar,controleCameras.retornaListaDoResposavel(lembrar), "Lembrete de Amostras em seu nome");
+                        subirTela();
+                        System.out.println("Lembrete enviado");
+                    }
+                    catch (IllegalArgumentException e){
+                        System.out.println("Responsavel nao encontrado");
+                    }
 
 
                     break;
                 case 7:
-                    System.out.println(controleCameras.toString());
-                    System.out.println("Digite qualquer coisa para voltar");
-                    teclado.next();
+
+                    subirTela();
+                    String modelo1 = escolheModelo();
+
+                    ArrayList<CamerasIP> todas = controleCameras.retornaListaDoModelo(modelo1);
+                    System.out.println(" ");
+                    System.out.println(todas.toString());
+                    System.out.println(" ");
+                    segurarTela();
                     break;
 
                 default:
@@ -335,9 +358,10 @@ public class Principal {
         System.out.println("3- Buscar por uma câmera");
         System.out.println("4- Retirar uma Camera para empréstimo");
         System.out.println("5- Devolver uma Câmera");
-        System.out.println("6- Enviar email");
-        System.out.println("7- Listar todas as Cameras");
-        System.out.println("8- Sair");
+        System.out.println("6- Enviar Lembrete para Responsavel");
+        System.out.println("7- Listar Cameras");
+        System.out.println("8- Enviar Modelos para cadastro no IntelbrasCloud");
+        System.out.println("9- Sair");
     }
 
     private static void segurarTela(){

@@ -17,8 +17,8 @@ public class Arquivo {
 
     public Arquivo(String arquivoCameras, String arquivoPessoas){
 
-        this.arquivoDeCameras = new File(getClass().getClassLoader().getResource(arquivoCameras).getFile());
-        this.arquivoDePessoas = new File(getClass().getClassLoader().getResource(arquivoPessoas).getFile());
+        this.arquivoDeCameras = new File(arquivoCameras);
+        this.arquivoDePessoas = new File(arquivoPessoas);
 
     }
 
@@ -49,64 +49,30 @@ public class Arquivo {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public ControleCameras puxarArquivoCameras(ControleCameras listaDeCameras, String arquivo) throws FileNotFoundException {
 
-            listaDeCameras = new ControleCameras();
+        listaDeCameras = new ControleCameras();
 
-            InputStream is = getClass().getResourceAsStream("/resources/" + arquivo);
+        Scanner leitor = new Scanner(arquivoDeCameras);
 
-            if (is == null){
-            is = getClass().getClassLoader().getResourceAsStream(arquivo);
-            }
-
-            Scanner leitor = new Scanner(is);
-
-            // varrendo o conteúdo do arquivo linha por linha
-            while (leitor.hasNextLine()) {
-                String linha = leitor.nextLine();
-                listaDeCameras.addCamera(montaCamera(linha));
-            }
-
-            return  listaDeCameras;
+        while (leitor.hasNext()) {
+            String linha = leitor.nextLine();
+            listaDeCameras.addCamera(montaCamera(linha));
+        }
+        return  listaDeCameras;
         }
 
     public ListaDePessoas puxarArquivoPessoas(ListaDePessoas listaDePessoas, String arquivo ) throws FileNotFoundException {
         listaDePessoas = new ListaDePessoas();
-
-        InputStream is = getClass().getResourceAsStream("/resources/" + arquivo);
-
-        if (is == null){
-            is = getClass().getClassLoader().getResourceAsStream(arquivo);
-        }
-
-
-        Scanner leitor = new Scanner(is);
-
-        while (leitor.hasNextLine()) {
+        Scanner leitor = new Scanner(arquivoDePessoas);
+        while (leitor.hasNext()) {
             String linha = leitor.nextLine();
             listaDePessoas.inserirPessoa(montaPessoa(linha));
         }
         return listaDePessoas;
+
     }
 
-    //NOK
     public void atualizarArquivoControleDeCameras(ControleCameras controleCameras) throws IOException {
 
 
@@ -156,8 +122,6 @@ public class Arquivo {
         return null;
     }
 
-
-
     public ControleCameras salvarCamera(CamerasIP camerasIP, ControleCameras controleCameras) throws IOException   {//throws IOException {
 
            FileWriter fwArquivo = null;
@@ -183,7 +147,7 @@ public class Arquivo {
         if (!arquivoDePessoas.exists()) {
             fwArquivo = new FileWriter(arquivoDePessoas, !arquivoDePessoas.exists()); //parametro do tipo FILE
             bw = new BufferedWriter(fwArquivo);
-            bw.write(pessoa.toString() + "\n");
+            bw.write(pessoa.toString());
             bw.close();
             fwArquivo.close();
 
@@ -192,7 +156,7 @@ public class Arquivo {
             // se true, ele concatena, se false ele cria ou zera o arquivo
             fwArquivo = new FileWriter(arquivoDePessoas, true); //parametro do tipo FILE
             bw = new BufferedWriter(fwArquivo);
-            bw.write(pessoa.toString() + "\n");
+            bw.write(pessoa.toString());
             bw.close();
             fwArquivo.close();
         }

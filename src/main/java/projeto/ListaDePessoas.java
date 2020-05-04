@@ -9,6 +9,7 @@ public class ListaDePessoas {
     public void inserirPessoa(Pessoa pessoa) {
         listaDePessoas.add(pessoa);
     }
+
     public Pessoa buscarPessoa(String nomeOUmatricula){
         for (Pessoa pessoa : listaDePessoas) {
             if(pessoa.getNome().equals(nomeOUmatricula)) return pessoa;

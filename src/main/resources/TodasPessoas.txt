@@ -1,1 +1,2 @@
-Pessoa - Nome= [Alexandre]  Matricula= [al053681]  Email= [alexandre@gmail.com]
+Pessoa - Nome= [Alexandre]  Matricula= [al053681]  Email= [alehherbst@gmail.com]
+Pessoa - Nome= [adm]  Matricula= [adm]  Email= [controle.de.amostras.itb@gmail.com]

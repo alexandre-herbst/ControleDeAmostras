@@ -24,5 +24,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-email
     compile group: 'org.apache.commons', name: 'commons-email', version: '1.5'
+
     implementation files('libs/ControleDeAmostras.jar')
 }
