@@ -130,13 +130,12 @@ public class Arquivo {
                // se true, ele concatena, se false ele cria ou zera o arquivo
                fwArquivo = new FileWriter(arquivoDeCameras, true); //parametro do tipo FILE
                bw = new BufferedWriter(fwArquivo);
-               bw.write(camerasIP.toString() + "\n");
+               bw.write(camerasIP.toString());
                bw.close();
                fwArquivo.close();
 
 
        controleCameras.addCamera(camerasIP);
-       System.out.println("Camera adicionada ao Armário");
        return controleCameras;
     }
 

@@ -38,10 +38,11 @@ public class Email {
                  sb.append(cameraip.toString()).append('\n');
              }
 
-
+            
              email.setMsg(sb.toString());
              email.addTo(responsavel.getEmail());
              email.buildMimeMessage();
+             System.out.println("Enviando Email...");
              email.sendMimeMessage();
 
          }

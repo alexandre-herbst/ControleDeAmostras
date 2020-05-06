@@ -30,5 +30,13 @@ public class ListaDePessoas {
         return sb.toString();
     }
 
+    public String toString2() {
+        StringBuilder sb = new StringBuilder();
+        for (Pessoa p : listaDePessoas) {
+            sb.append(p.getNome()).append('\n');
+        }
+        return sb.toString();
+    }
+
 
 }

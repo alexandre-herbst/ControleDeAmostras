@@ -51,6 +51,7 @@ public class ControleCameras {
 
             listaCamera.add(cameraIP);
             controle.put(cameraIP.getModelo(), listaCamera);
+
             return true;
         }
 

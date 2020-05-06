@@ -59,9 +59,16 @@ public class CamerasIP {
     public String toString() {
         return "CamerasIP " +
                 "->  Modelo=  [" + modelo +
-                "]     Numero De Série=  ["  + serialNumber +
+                "]     Numero De Série=  [" + serialNumber +
                 "]     MAC=  [" + MAC +
-                "]     Local=  [" + local  +
-                "]     Responsável=  [" + responsavel + "]";
+                "]     Local=  [" + local +
+                "]     Responsável=  [" + responsavel + "]"+ "\n";
+    }
+
+    public String toString2() {
+        return modelo + "   NS= " + serialNumber +
+                "     MAC=  " + MAC +
+                "     Responsável= " + responsavel + "\n";
+
     }
 }
