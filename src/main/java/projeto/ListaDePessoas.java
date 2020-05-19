@@ -10,6 +10,10 @@ public class ListaDePessoas {
         listaDePessoas.add(pessoa);
     }
 
+    public ArrayList<Pessoa> getListaDePessoas() {
+        return listaDePessoas;
+    }
+
     public Pessoa buscarPessoa(String nomeOUmatricula){
         for (Pessoa pessoa : listaDePessoas) {
             if(pessoa.getNome().equals(nomeOUmatricula)) return pessoa;

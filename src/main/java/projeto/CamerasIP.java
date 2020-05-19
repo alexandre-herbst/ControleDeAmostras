@@ -57,8 +57,7 @@ public class CamerasIP {
 
     @Override
     public String toString() {
-        return "CamerasIP " +
-                "->  Modelo=  [" + modelo +
+        return  "Modelo=  [" + modelo +
                 "]     Numero De Série=  [" + serialNumber +
                 "]     MAC=  [" + MAC +
                 "]     Local=  [" + local +

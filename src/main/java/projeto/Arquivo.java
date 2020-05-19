@@ -76,12 +76,16 @@ public class Arquivo {
     public void atualizarArquivoControleDeCameras(ControleCameras controleCameras) throws IOException {
 
 
-        FileWriter arq = new FileWriter(arquivoDeCameras.getAbsolutePath());
-        PrintWriter gravarArq = new PrintWriter(arq);
+        FileWriter arq = null;
+        arq =  new FileWriter(arquivoDeCameras.getPath());
+        BufferedWriter bw = new BufferedWriter(arq);
         String arquivoNovo = controleCameras.toString();
 
-        gravarArq.printf(arquivoNovo);
+        bw.write(arquivoNovo);
+        bw.flush();
+        arq.flush();
 
+        bw.close();
         arq.close();
 
 
@@ -212,8 +216,11 @@ public class Arquivo {
         linha = linha.substring(linha.indexOf(']')+ 1,linha.lastIndexOf(']')+1);
 
         String email = linha.substring(linha.indexOf('[')+1,linha.indexOf(']'));
+        linha = linha.substring(linha.indexOf(']')+ 1,linha.lastIndexOf(']')+1);
 
-        return new Pessoa(nome, matricula, email);
+        String user = linha.substring(linha.indexOf('[')+1,linha.indexOf(']'));
+
+        return new Pessoa(nome, matricula, email, user);
 
     }
 

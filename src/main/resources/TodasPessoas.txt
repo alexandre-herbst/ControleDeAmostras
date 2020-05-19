@@ -1,2 +1,4 @@
-Pessoa - Nome= [Alexandre]  Matricula= [al053681]  Email= [alehherbst@gmail.com]
-Pessoa - Nome= [adm]  Matricula= [adm]  Email= [controle.de.amostras.itb@gmail.com]
+Pessoa - Nome= [Alexandre Herbst Carvalho]Matricula= [adm]  Email= [alexandre.carvalho@intelbras.com.br]  Tipo= [user]
+Pessoa - Nome= [Leonardo Rodrigues Lima]Matricula= [admm]  Email= [leonardo.lima@intelbras.com.br]  Tipo= [user]
+Pessoa - Nome= [Alexandre ADM]Matricula= [adm1]  Email= [alexandre.carvalho@intelbras.com.br]  Tipo= [adm]
+Pessoa - Nome= [Leonardo ADM]Matricula= [adm2]  Email= [leonardo.lima@intelbras.com.br]  Tipo= [adm]
